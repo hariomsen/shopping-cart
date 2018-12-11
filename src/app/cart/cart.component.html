@@ -22,8 +22,7 @@
               <td>{{p.price}}</td>
               <td>
                 <div class="input-group">
-                  <input type="text" [ngModel]='p.count' class="form-control"  
-                    aria-describedby="button-addon4">
+                  <input type="text" [ngModel]='p.count' class="form-control" aria-describedby="button-addon4">
                   <div class="input-group-append" id="button-addon4">
                     <button class="btn btn-sm btn-outline-secondary" (click)='removeQty(p)' type="button">-</button>
                     <button class="btn btn-sm btn-outline-secondary" (click)='addQty(p)' type="button">+</button>
@@ -37,16 +36,76 @@
         <div *ngIf='cartList && cartList.length > 0' class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-center">
           <div class="row">
             <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-                Total Qty: {{total.count}}
+              Total Qty: {{total.count}}
             </div>
             <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-                Total amount: {{total.total}}
+              Total amount: {{total.total}}
             </div>
           </div>
         </div>
-        <button *ngIf='cartList && cartList.length > 0' class="btn btn-success">Buy now</button>
+        <button *ngIf='cartList && cartList.length > 0' (click)="open(content)" class="btn btn-success">Buy now</button>
       </div>
     </div>
 
   </div>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Invoice</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h3 style="text-align:center">Shopping Point</h3>
+    <p style="text-align:center">Neosoft, Dadar</p>
+    <hr>
+    <div class="container">
+      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+        <table class="table  table-bordered">
+          <thead>
+            <tr>
+              <th style="min-width:100px;">Item</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+
+          </thead>
+          <tbody>
+            <tr *ngFor='let p of cartList'>
+              <td>{{p.name}}</td>
+              <td>{{p.count}}</td>
+              <td>{{p.price}}</td>
+              
+              <td>{{p.price*p.count}}</td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                Gross Total
+              </td>
+              <td>
+                {{total.count}}
+              </td>
+              <td>
+                {{total.total}}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3">IGST@18%</td>
+              <td>{{(18.0*total.total)/100.0}}</td>
+            </tr>
+            <tr>
+              <td colspan="3">Net Amount</td>
+              <td>{{((18.0*total.total)/100.0)+total.total}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Continue to payment</button>
+  </div>
+</ng-template>
