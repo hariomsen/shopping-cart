@@ -1,0 +1,52 @@
+<h2>Your cart</h2>
+<p>Ready to buy.</p>
+<div class="row">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-center">
+        <div *ngIf='!cartList || cartList.length == 0' class="alert alert-info">
+          Please add product to Buy
+        </div>
+        <table *ngIf='cartList && cartList.length > 0' class="table table-responsive table-bordered">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Amt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let p of cartList'>
+              <td>{{p.name | titlecase}}</td>
+              <td>{{p.price}}</td>
+              <td>
+                <div class="input-group">
+                  <input type="text" [ngModel]='p.count' class="form-control"  
+                    aria-describedby="button-addon4">
+                  <div class="input-group-append" id="button-addon4">
+                    <button class="btn btn-sm btn-outline-secondary" (click)='removeQty(p)' type="button">-</button>
+                    <button class="btn btn-sm btn-outline-secondary" (click)='addQty(p)' type="button">+</button>
+                  </div>
+                </div>
+              </td>
+              <td>{{p.price * p.count}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf='cartList && cartList.length > 0' class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-center">
+          <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                Total Qty: {{total.count}}
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                Total amount: {{total.total}}
+            </div>
+          </div>
+        </div>
+        <button *ngIf='cartList && cartList.length > 0' class="btn btn-success">Buy now</button>
+      </div>
+    </div>
+
+  </div>
+</div>
